@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 
 export default function App() {
   const [people, setPeople] = useState([
@@ -15,16 +15,15 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        {people.map((item) => {
-          return (
-            <View key={item.key}>
-              <Text style={styles.item}>{item.name}</Text>
-            </View>
-          );
-        })}
-      </ScrollView>
+      <FlatList
+        data={people}
+        renderItem={({ item }) => <Text style={styles.item}>{item.name}</Text>}
+      />
     </View>
+
+    // FlatList is built to render a large list of items. You need to pass an array of data and then render each item in the array with the renderItem callback. It is optimized to have very good performances with very large arrays because it actually only renders the items that need to be displayed at the moment.
+    //ScrollView is built to render a generic content in a way that it scrolls when the content is bigger than the ScrollView itself. it does not provide the same optimization of the flat list for very long content.
+    //keyextractor and numcolumn props are generally used
   );
 }
 
@@ -34,8 +33,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingTop: 40,
     paddingHorizontal: 20,
-    // alignItems: "center",
-    // justifyContent: "center",
   },
   item: {
     marginTop: 24,
